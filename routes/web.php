@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ClientsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,8 +29,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // Client Pages ==============
-Route::get('/clients', function () {
-    return Inertia::render('Clients/Index');
-})->middleware(['auth', 'verified'])->name('clients');
+Route::middleware('auth')->group(function () {
+    Route::get('/clients', [ClientsController::class, 'index'])->name('clients.index');
+});
+
 
 require __DIR__.'/auth.php';

@@ -1,13 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
-import Table from '@/Components/Table.vue';
+import TableCreate from '@/Components/TableCreate.vue';
 
 
-const clients = usePage().props;
-
-
-console.log(clients);
+let clients = usePage().props.users;
 
 
 
@@ -37,9 +34,7 @@ console.log(clients);
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                       <Table 
-                        :headings="['Name', 'Email', 'Created At']" 
-                        :rows="['John Doe', 'jdoe@gmail.com', '06/06/2024']" />
+                       <TableCreate :tableData="clients" />
                             
                     </div>
                 </div>
