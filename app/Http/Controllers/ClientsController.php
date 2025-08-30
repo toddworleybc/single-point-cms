@@ -23,8 +23,6 @@ class ClientsController extends Controller
             return $value->only(['id', 'name', 'email']);
         } );
 
-        dd($users);
-
 
         return Inertia::render('Clients/Index', [
             'users' => $users
@@ -51,9 +49,17 @@ class ClientsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Clients $clients)
+    public function show($id)
     {
         //
+        $client = User::find($id);
+
+    
+        
+        return Inertia::render('Clients/Show', [
+            'client' => $client
+        ]);
+
     }
 
     /**

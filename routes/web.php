@@ -18,8 +18,18 @@ Route::get('/', function () {
 
 // Dashboard Page ============
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+
+    if(Auth::user()->role === 'client'){
+        // Client Dashboard
+        return Inertia::render('Clients/Portal');
+    } else { 
+        // Lawyer Admin Dashboard
+         return Inertia::render('Dashboard');
+    }
+
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 // Profile Pages ==============
 Route::middleware('auth')->group(function () {
@@ -31,6 +41,7 @@ Route::middleware('auth')->group(function () {
 // Client Pages ==============
 Route::middleware('auth')->group(function () {
     Route::get('/clients', [ClientsController::class, 'index'])->name('clients.index');
+    Route::get('/client/{id}', [ClientsController::class, 'show'])->name('client.show');
 });
 
 

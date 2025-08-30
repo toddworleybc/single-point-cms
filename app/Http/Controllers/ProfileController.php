@@ -18,10 +18,24 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+
+
+        if(Auth::user()->role === 'client'){
+            // Client Profile Edit
+            return Inertia::render('Profile/ClientEdit', [
+                'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+                'status' => session('status'),
+            ]);
+        } else { 
+            // Lawyer Admin Profile Edit
+             return Inertia::render('Profile/Edit', [
+                 'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+                 'status' => session('status'),
+             ]);
+        }
+
+
+      
     }
 
     /**

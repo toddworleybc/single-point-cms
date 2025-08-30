@@ -26,21 +26,32 @@ const headings = Object.getOwnPropertyNames(tableData[0]);
                     <th v-for="(heading, i) in headings" :key="i">
                         {{ heading }}
                     </th>
+                    <th>Access</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(tableRow, i) in tableData" :key="i">
                     <td v-for="(data, j) in tableRow" :key="j">{{ data ? data : "null" }}</td>
+                    <td><a :href="route('client.show', tableRow['id'])">View Client</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
 
-<style>
+<style scoped>
     th, td {
         border: 1px solid gray;
         padding: 8px;
         text-align: left;
+    }
+    a:link,  a:visited {
+        color: blue;
+    }
+     a:hover {
+        color: lightblue
+    }
+    a:active {
+        color: green;
     }
 </style>

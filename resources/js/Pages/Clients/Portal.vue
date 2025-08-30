@@ -1,30 +1,17 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, usePage } from '@inertiajs/vue3';
-import TableCreate from '@/Components/TableCreate.vue';
-
-
-let clients = usePage().props.users;
-
-
-
-
-
-
-
-
-
+import ClientLayout from '@/Layouts/ClientLayout.vue';
+import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Clients" />
+    <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <ClientLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
             >
-                Clients
+               Client Portal
             </h2>
         </template>
 
@@ -34,11 +21,10 @@ let clients = usePage().props.users;
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                       <TableCreate :tableData="clients" />
-                            
+                        You're logged in!
                     </div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </ClientLayout>
 </template>
