@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\ClientMessages;
 
 class User extends Authenticatable
 {
@@ -34,6 +35,14 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+
+
+    function clientMessages() {
+        return $this->hasMany(ClientMessages::class);
+    }
+
+
 
     /**
      * Get the attributes that should be cast.

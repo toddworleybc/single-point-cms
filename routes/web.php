@@ -21,7 +21,9 @@ Route::get('/dashboard', function () {
 
     if(Auth::user()->role === 'client'){
         // Client Dashboard
-        return Inertia::render('Clients/Portal');
+        return Inertia::render('Clients/Portal', [
+            'client' => Auth::user()
+        ]);
     } else { 
         // Lawyer Admin Dashboard
          return Inertia::render('Dashboard');
@@ -42,6 +44,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/clients', [ClientsController::class, 'index'])->name('clients.index');
     Route::get('/client/{id}', [ClientsController::class, 'show'])->name('client.show');
+    Route::post('/client/message_submit', [ClientsController::class, 'storeClientMessage'])->name('client.message.submit');
 });
 
 
