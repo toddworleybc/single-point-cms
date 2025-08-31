@@ -16,20 +16,19 @@ class ClientsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    
 
+    // index view for clientPortal to send data 
 
-        $users = User::all();
+    public function clientPortal(Request $request) {
 
-        $users = $users->map( function($value, $key) {
-            return $value->only(['id', 'name', 'email']);
-        } );
+        $client = $request->user()->only(['id', 'name']);
 
-
-        return Inertia::render('Clients/Index', [
-            'users' => $users
+         // Client Dashboard
+        return Inertia::render('Client/Portal', [
+            'client' => $client
         ]);
+
 
     }
 
@@ -52,62 +51,4 @@ class ClientsController extends Controller
         return redirect()->back();
     }   
 
-
- /*=====================================================================  =======================================================================*/ 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreClientsRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        //
-        $client = User::find($id);
-
-    
-        
-        return Inertia::render('Clients/Show', [
-            'client' => $client
-        ]);
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Clients $clients)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateClientsRequest $request, Clients $clients)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Clients $clients)
-    {
-        //
-    }
 }

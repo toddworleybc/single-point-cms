@@ -1,5 +1,5 @@
 <script setup>
-import MessageControl from '@/utilities/MessageControl';
+import MessageControl from '@/Utilities/MessageControl';
 import { computed } from 'vue';
 
 

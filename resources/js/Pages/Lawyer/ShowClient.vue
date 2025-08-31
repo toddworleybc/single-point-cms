@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage, useForm } from '@inertiajs/vue3';
+import Btn from '@/Components/Btn.vue';
 
 const client = usePage().props.client;
 
@@ -67,11 +68,11 @@ function toggleMessages(e) {
                             <div id="documents" class="w-full border border-gray-300 p-4 m-2">
                                 <section class="flex justify-between mb-4 border-bottom border-gray-300 border-b-2 pb-4">
                                     <div>
-                                        <button id="clientMessaging" class="messageTabBtn" @click="toggleSections">Messaging</button>
+                                        <Btn id="clientMessaging" type="success"  @click.prevent="toggleSections">Messaging</Btn>
                                     </div>
                                     <div>
-                                        <button id="docFiles" class="docTabBtn" @click="toggleSections">Documents</button>
-                                         <button id="docPhotos" class="docTabBtn" @click="toggleSections">Photos</button>
+                                        <Btn id="docFiles" @click.prevent="toggleSections">Documents</Btn>
+                                         <Btn id="docPhotos" @click.prevent="toggleSections">Photos</Btn>
                                     </div>
                                     
                                     
@@ -87,7 +88,7 @@ function toggleMessages(e) {
 
                                <section id="client-messaging">
                                   
-                                   <button class="docTabBtn">+ Create Message</button>
+                                   <Btn>+ Create Message</Btn>
                                    <h2 class="mt-6 text-lg"><strong>Messages Received from {{ client.name }}</strong></h2>
                                    <div class="border-b-2 border-gray-300 pb-4 my-4">
                                         <h3>- New Messages -</h3>
@@ -110,23 +111,4 @@ function toggleMessages(e) {
     </AuthenticatedLayout>
 </template>
 
-<style scoped>
-    .docTabBtn {
-        @apply bg-blue-500 text-white font-bold py-2 px-4 rounded m-1;
-    }
-    .docTabBtn:hover {
-        @apply bg-blue-700;
-    }
-    .docTabBtn:active {
-        @apply bg-gray-800;
-    }
-    .messageTabBtn {
-        @apply bg-green-700 text-white font-bold py-2 px-4 rounded m-1;
-    }
-    .messageTabBtn:hover {
-        @apply bg-green-800;
-    }
-    .messageTabBtn:active {
-        @apply bg-gray-800;
-    }
-</style>
+

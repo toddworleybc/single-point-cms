@@ -7,13 +7,6 @@ import TableCreate from '@/Components/TableCreate.vue';
 let clients = usePage().props.users;
 
 
-
-
-
-
-
-
-
 </script>
 
 <template>
@@ -34,7 +27,7 @@ let clients = usePage().props.users;
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                       <TableCreate :tableData="clients" />
+                       <TableCreate :tableData="clients" routeLink="lawyer.show.client" viewLinkText="View Client" />
                             
                     </div>
                 </div>

@@ -2,10 +2,16 @@
 import { defineProps } from 'vue';
 
 
-const { tableData } = defineProps({
+const { tableData, viewLink, viewLinkText } = defineProps({
     tableData: {
         type: Array,
         required: true
+    },
+    routeLink: {
+        type: String,
+    },
+    viewLinkText: {
+        type: String
     }
 });
 
@@ -26,13 +32,13 @@ const headings = Object.getOwnPropertyNames(tableData[0]);
                     <th v-for="(heading, i) in headings" :key="i">
                         {{ heading }}
                     </th>
-                    <th>Access</th>
+                    <th v-if="routeLink">Access</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(tableRow, i) in tableData" :key="i">
                     <td v-for="(data, j) in tableRow" :key="j">{{ data ? data : "null" }}</td>
-                    <td><a :href="route('client.show', tableRow['id'])">View Client</a></td>
+                    <td v-if="routeLink"><a :href="route(routeLink, tableRow['id'])">{{ viewLinkText ? viewLinkText : "View" }}</a></td>
                 </tr>
             </tbody>
         </table>

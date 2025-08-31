@@ -1,12 +1,14 @@
 <script setup>
-import MessageControl from '@/utilities/MessageControl';
+import MessageControl from '@/Utilities/MessageControl';
 import ClientLayout from '@/Layouts/ClientLayout.vue';
 import { Head, usePage, useForm } from '@inertiajs/vue3';
 import Modal from '@/Components/Modal.vue';
 import { ref } from 'vue';
+import Btn from '@/Components/Btn.vue';
 
 const client = usePage().props.client;
 const showMessageModal = ref(false);
+const viewSentMessages = ref(false);
 
 
 const messageForm = useForm({
@@ -80,15 +82,15 @@ function toggleSections(e) {
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-
+                        <h2 class="mb-4">{{ client.name }}</h2>
                             <div id="documents" class="w-full border border-gray-300 p-4 m-2">
                                 <section class="flex justify-between mb-4 border-bottom border-gray-300 border-b-2 pb-4">
                                     <div>
-                                        <button id="clientMessaging" class="messageTabBtn" @click="toggleSections">Messaging</button>
+                                        <Btn id="clientMessaging" type="success" @click.prevent="toggleSections">Messaging</Btn>
                                     </div>
                                     <div>
-                                        <button id="docFiles" class="docTabBtn" @click="toggleSections">Documents</button>
-                                         <button id="docPhotos" class="docTabBtn" @click="toggleSections">Photos</button>
+                                        <Btn id="docFiles" @click.prevent="toggleSections">Documents</Btn>
+                                         <Btn id="docPhotos" @click.prevent="toggleSections">Photos</Btn>
                                     </div>
                                     
                                     
@@ -104,18 +106,29 @@ function toggleSections(e) {
 
                                <section id="client-messaging">
                                   
-                                   <button @click="showMessageModal = true" class="docTabBtn">+ Create Message</button>
-
-                                   <h2 class="mt-6 text-lg"><strong>Messages Received from Attorney</strong></h2>
-                                   <div class="border-b-2 border-gray-300 pb-4 my-4">
-                                        <h3>- New Messages -</h3>
-
+                                   <Btn @click.prevent="showMessageModal = true">+ Create Message</Btn>
+                                    <div class="flex justify-between items-center">
+                                        <h2 v-if="!viewSentMessages" class="mt-6 text-lg"><strong>Messages Received from Attorney</strong></h2>
+                                        <h2 v-else class="mt-6 text-lg"><strong>Your Messages</strong></h2>
+                                        <div class="space-x-2">
+                                            <input id="sent-messages" type="checkbox" v-model="viewSentMessages">
+                                            <label for="sent-messages" class="cursor-pointer">View Sent Messages</label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div v-if="!viewSentMessages">
+                                        <div class="border-b-2 border-gray-300 pb-4 my-4">
+                                            <h3>- New Messages -</h3>
                                         </div>
                                         <div class="border-b-2 border-gray-300 pb-4 mb-4">
                                             <h3>- Old Messages -</h3>
+                                        </div>
+                                    </div>
+
+                                    <div v-else class="border-b-2 border-gray-300 pb-4 my-4">
+                                        <h3>- Sent Messages -</h3>
 
                                     </div>
-                                
 
                                </section>
 
@@ -132,31 +145,10 @@ function toggleSections(e) {
                 <form @submit.prevent="messageFormSubmit">
                     <textarea v-model="messageForm.message" class="w-full" rows="20"></textarea>
                     <div class="flex justify-end">
-                        <button class="docTabBtn text-right">Send Message</button>
+                        <Btn class="text-right">Send Message</Btn>
                     </div>
                 </form>
             </div>
          </Modal>
     </ClientLayout>
 </template>
-
-<style scoped>
-    .docTabBtn {
-        @apply bg-blue-500 text-white font-bold py-2 px-4 rounded m-1;
-    }
-    .docTabBtn:hover {
-        @apply bg-blue-700;
-    }
-    .docTabBtn:active {
-        @apply bg-gray-800;
-    }
-    .messageTabBtn {
-        @apply bg-green-700 text-white font-bold py-2 px-4 rounded m-1;
-    }
-    .messageTabBtn:hover {
-        @apply bg-green-800;
-    }
-    .messageTabBtn:active {
-        @apply bg-gray-800;
-    }
-</style>

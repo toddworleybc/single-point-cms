@@ -49,6 +49,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        if($user->role === 'client') {
+             return redirect(route('client.portal', absolute: false));
+        } else {
+             return redirect(route('lawyer.dashboard', absolute: false));
+        }
     }
 }
