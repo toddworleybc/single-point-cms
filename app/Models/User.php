@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\ClientMessages;
+use App\Models\Messages;
 
 class User extends Authenticatable
 {
@@ -38,8 +38,8 @@ class User extends Authenticatable
 
 
 
-    function clientMessages() {
-        return $this->hasMany(ClientMessages::class);
+    function messages() {
+        return $this->hasMany(Messages::class);
     }
 
 

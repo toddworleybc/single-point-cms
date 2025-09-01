@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clients;
-use App\Models\ClientMessages;
+use App\Models\Messages;
 use App\Models\User;
 use App\Http\Requests\StoreClientsRequest;
 use App\Http\Requests\UpdateClientsRequest;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ClientsController extends Controller
 {
@@ -23,10 +24,12 @@ class ClientsController extends Controller
     public function clientPortal(Request $request) {
 
         $client = $request->user()->only(['id', 'name']);
-
+        $messagesSent = $request->user()->messages;
+    
          // Client Dashboard
         return Inertia::render('Client/Portal', [
-            'client' => $client
+            'client' => $client,
+            'messagesSent' => $messagesSent
         ]);
 
 
@@ -40,12 +43,16 @@ class ClientsController extends Controller
 
         $request->validate([
             'message' => 'required|string',
-            'user_id' => 'required|exists:users,id',
+            'title' => 'required|string'
         ]);
 
-        ClientMessages::create([
+        Messages::create([
             'message' => $request->message,
-            'user_id' => $request->user_id
+            'user_id' => $request->user()->id,
+            'title' => $request->title,
+            'message_to' => "1", // always lawyer/admin
+            'message_from' => $request->user()->id,
+            'is_read' => "Not Read"
         ]);
 
         return redirect()->back();

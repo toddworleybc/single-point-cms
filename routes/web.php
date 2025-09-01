@@ -62,6 +62,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // single client
     Route::get('/client/{id}', [LawyerController::class, 'showClient'])->name('lawyer.show.client');
 
+    // single client message
+    Route::get('/client/{id}', [LawyerController::class, 'showClient'])->name('lawyer.show.client');
+
+    // mark as read
+    Route::post('/client/mark-as-read', [LawyerController::class, 'markAsRead'])->name('lawyer.mark.as.read');
+    
+    // Send message
+    Route::post('/client/admin-submit-message', [LawyerController::class, 'sendMessage'])->name('lawyer.submit.message');
+
 });
 
 

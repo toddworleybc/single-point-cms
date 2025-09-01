@@ -5,16 +5,21 @@ import { Head, usePage, useForm } from '@inertiajs/vue3';
 import Modal from '@/Components/Modal.vue';
 import { ref } from 'vue';
 import Btn from '@/Components/Btn.vue';
+import TableCreate from '@/Components/TableCreate.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import TextInput from '@/Components/TextInput.vue';
 
 const client = usePage().props.client;
+const sentMessages = usePage().props.messagesSent;
 const showMessageModal = ref(false);
 const viewSentMessages = ref(false);
 
 
 const messageForm = useForm({
     message:  "",
-    user_id: client.id
+    title: ""
 });
+
 
 
 function messageFormSubmit() {
@@ -33,6 +38,7 @@ function messageFormSubmit() {
                 MessageControl.message = e.message;
                 MessageControl.type = 'error';
             },
+            preserveState: false
         });
 
 }// messageFormSubmit
@@ -126,7 +132,12 @@ function toggleSections(e) {
                                     </div>
 
                                     <div v-else class="border-b-2 border-gray-300 pb-4 my-4">
-                                        <h3>- Sent Messages -</h3>
+                                        <h3 class="mb-4">- Sent Messages -</h3>
+
+                                        <TableCreate v-if="sentMessages" :tableData="sentMessages" />
+
+
+                                        <p v-else class="font-bold text-red-600">No Sent Messages</p>
 
                                     </div>
 
@@ -140,10 +151,17 @@ function toggleSections(e) {
         </div>
         <!-- // Create Message Modal  -->
          <Modal class="px-4" :show="showMessageModal" @close="showMessageModal = false">
-            <h2 class="border-b border-gray-300 py-4 mb-4 text-center text-2xl">Enter Message</h2>
+            <h2 class="border-b border-gray-300 py-4 mb-4 text-center text-2xl">Create Message</h2>
             <div class="py-4 px-6">
                 <form @submit.prevent="messageFormSubmit">
-                    <textarea v-model="messageForm.message" class="w-full" rows="20"></textarea>
+                    <div class="mb-4">
+                        <InputLabel class="mb-2" for="message-title">Title</InputLabel>
+                        <TextInput id="message-title" class="w-full" type="text" v-model="messageForm.title" />
+                    </div>
+                    <div>
+                        <InputLabel class="mb-2" for="message">Message</InputLabel>
+                        <textarea id="message" v-model="messageForm.message" class="w-full" rows="10"></textarea>
+                    </div>
                     <div class="flex justify-end">
                         <Btn class="text-right">Send Message</Btn>
                     </div>

@@ -27,7 +27,7 @@ let clients = usePage().props.users;
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                       <TableCreate :tableData="clients" routeLink="lawyer.show.client" viewLinkText="View Client" />
+                       <TableCreate :tableData="clients" routeLink="lawyer.show.client" viewLinkText="View Client" :tableFilters="['name', 'email']" />
                             
                     </div>
                 </div>

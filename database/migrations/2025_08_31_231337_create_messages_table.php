@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('client_messages', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('title');
             $table->text('message');
-            $table->boolean('is_read')->default(false);
+            $table->string('is_read')->default('Not Read');
+            $table->string('message_to');
+            $table->string('message_from');
+            $table->string('replied_to')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_messages');
+        Schema::dropIfExists('messages');
     }
 };

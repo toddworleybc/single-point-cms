@@ -96,5 +96,8 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+        <div class="mt-6 text-center">
+            <p>Don't have an account yet? <span class="underline text-blue-500 hover:text-blue-300"><a :href="route('register')">Click here.</a></span></p>
+        </div>
     </GuestLayout>
 </template>
