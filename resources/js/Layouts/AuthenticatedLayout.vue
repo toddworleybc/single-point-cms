@@ -22,7 +22,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('lawyer.dashboard')">
+                                <Link :href="route('admin.dashboard')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
@@ -34,14 +34,14 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('lawyer.dashboard')"
-                                    :active="route().current('lawyer.dashboard')"
+                                    :href="route('admin.dashboard')"
+                                    :active="route().current('admin.dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('lawyer.clients')"
-                                    :active="route().current('lawyer.clients')"
+                                    :href="route('admin.clients')"
+                                    :active="route().current('admin.clients')"
                                 >
                                     Clients
                                 </NavLink>
@@ -147,8 +147,8 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('lawyer.dashboard')"
-                            :active="route().current('lawyer.dashboard')"
+                            :href="route('admin.dashboard')"
+                            :active="route().current('admin.dashboard')"
                         >
                             Dashboard
                         </ResponsiveNavLink>

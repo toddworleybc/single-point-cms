@@ -52,7 +52,7 @@ class RegisteredUserController extends Controller
         if($user->role === 'client') {
              return redirect(route('client.portal', absolute: false));
         } else {
-             return redirect(route('lawyer.dashboard', absolute: false));
+             return redirect(route('admin.dashboard', absolute: false));
         }
     }
 }

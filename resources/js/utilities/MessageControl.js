@@ -1,10 +1,12 @@
-import { reactive } from "vue";
+import {reactive} from 'vue';
 
+function createMessageControl() {
+    const state = reactive({
+        message: "",
+        type: "",
+        pulse: false,
+    });
+    return state;
+}
 
-const MessageControl = reactive({
-    message: "",
-    type: "",
-    pulse: false
-});
-
-export default MessageControl;
+export default createMessageControl;

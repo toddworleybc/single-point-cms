@@ -6,8 +6,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
-import MessageBanner from '@/Components/MessageBanner.vue';
-import MessageControl from '@/Utilities/MessageControl';
+
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -193,7 +192,7 @@ const showingNavigationDropdown = ref(false);
             
             <!-- Page Content -->
             <main>
-                <MessageBanner />
+                
                 <slot />
             </main>
         </div>

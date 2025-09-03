@@ -25,6 +25,18 @@ const props = defineProps({
     },
     changeHeading: {
         type: Object
+    },
+    changeAcessHeading: {
+        type: String,
+        default: 'Access'
+    },
+    tdClass: {
+        type: String,
+        default: ''
+    },
+    thClass: {
+        type: String,
+        default: ''
     }
 });
 // Emits =====
@@ -63,29 +75,29 @@ const headings = computed( () => {
 </script>
 
 <template>
-    <div>
+    <div class="overflow-x-auto">
 
         <table class="table-auto border-collapse border border-gray-400 w-full">
 
             <thead>
                 <tr>
-                    <th v-for="(heading, i) in headings" :key="i">
+                    <th :class="thClass" v-for="(heading, i) in headings" :key="i">
                         
                         {{ heading }}
                     </th>
-                    <th v-if="routeLink">Access</th>
+                    <th :class="thClass" v-if="routeLink || emitSingle">{{ changeAcessHeading }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(tableRow, i) in filteredTable" :key="i">
 
-                    <td v-for="(data, key, j) in tableRow" :key="j">{{ 
+                    <td :class="tdClass" v-for="(data, key, j) in tableRow" :key="j">{{ 
                         nullValue !== undefined && 
                         nullValue.hasOwnProperty(key) ? nullValue[key] : data }}</td>
 
-                    <td v-if="routeLink"><a :href="route(routeLink, props.tableData[i]['id'])">{{ viewLinkText ? viewLinkText : "View" }}</a></td>
+                    <td :class="tdClass" v-if="routeLink"><a :href="route(routeLink, props.tableData[i]['id'])">{{ viewLinkText ? viewLinkText : "View" }}</a></td>
 
-                    <td v-if="emitSingle"><a @click.prevent="singleToParent(props.tableData[i])" href="#">{{ viewLinkText ? viewLinkText : "View" }}</a></td>
+                    <td :class="tdClass" v-if="emitSingle"><a @click.prevent="singleToParent(props.tableData[i])" href="#">{{ viewLinkText ? viewLinkText : "View" }}</a></td>
 
                 </tr>
             </tbody>
@@ -99,13 +111,8 @@ const headings = computed( () => {
         padding: 8px;
         text-align: left;
     }
-    a:link,  a:visited {
-        color: blue;
+    a:link {
+        @apply text-blue-800 hover:text-blue-400 active:text-green-700 visited:text-blue-700
     }
-     a:hover {
-        color: lightblue
-    }
-    a:active {
-        color: green;
-    }
+   
 </style>

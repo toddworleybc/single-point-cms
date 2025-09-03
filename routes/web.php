@@ -2,74 +2,47 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientsController;
-use App\Http\Controllers\LawyerController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//Welcome Page ==========
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 
-// Dashboard Page ============
-// Route::get('/dashboard', function () {
-
-//     if(Auth::user()->role === 'client'){
-//         // Client Dashboard
-//         return Inertia::render('Client/Portal', [
-//             'client' => Auth::user()
-//         ]);
-//     } else { 
-//         // Lawyer Admin Dashboard
-//          return Inertia::render('Dashboard');
-//     }
-
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Backend Routing ========
-
-// client portal ---
-
-
-// Client Portal ==============
+// Client Portal ==============//
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/portal', [ClientsController::class, 'clientPortal'])->middleware(['auth', 'verified'])->name('client.portal');
 
     Route::post('/client/message_submit', [ClientsController::class, 'storeClientMessage'])->name('client.message.submit');
+
+    Route::post('/client/client-mark-as-read', [ClientsController::class, 'markAsRead'])->name('client.mark.as.read');
 });
 
-// Lawyer Dashboard
+// Admin Dashboard =================///
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // dashboard
-    Route::get('/dashboard', [LawyerController::class, 'lawyerDashboard'])->name('lawyer.dashboard');
+    Route::get('/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
 
     // clients list
-    Route::get('/clients', [LawyerController::class, 'clients'])->name('lawyer.clients');
+    Route::get('/clients', [AdminController::class, 'clients'])->name('admin.clients');
 
     // single client
-    Route::get('/client/{id}', [LawyerController::class, 'showClient'])->name('lawyer.show.client');
+    Route::get('/client/{id}', [AdminController::class, 'showClient'])->name('admin.show.client');
 
     // single client message
-    Route::get('/client/{id}', [LawyerController::class, 'showClient'])->name('lawyer.show.client');
+    Route::get('/client/{id}', [AdminController::class, 'showClient'])->name('admin.show.client');
 
     // mark as read
-    Route::post('/client/mark-as-read', [LawyerController::class, 'markAsRead'])->name('lawyer.mark.as.read');
+    Route::post('/client/admin-mark-as-read', [AdminController::class, 'markAsRead'])->name('admin.mark.as.read');
     
     // Send message
-    Route::post('/client/admin-submit-message', [LawyerController::class, 'sendMessage'])->name('lawyer.submit.message');
+    Route::post('/client/admin-submit-message', [AdminController::class, 'sendMessage'])->name('admin.submit.message');
 
 });
 

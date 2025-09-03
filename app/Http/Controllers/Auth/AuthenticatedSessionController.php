@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
         if ($user->role === 'client') {
             return redirect()->intended(route('client.portal', absolute: false));
         } else {
-            return redirect()->intended(route('lawyer.dashboard', absolute: false));
+            return redirect()->intended(route('admin.dashboard', absolute: false));
         }
        
     }

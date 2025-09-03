@@ -24,15 +24,33 @@ class ClientsController extends Controller
     public function clientPortal(Request $request) {
 
         $client = $request->user()->only(['id', 'name']);
-        $messagesSent = $request->user()->messages;
+        $messagesSent = $request->user()->messages()
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        $adminMessages = Messages::where('message_to', $request->user()->id)
+                         ->orderBy('created_at', 'desc')
+                         ->get();
     
+
          // Client Dashboard
         return Inertia::render('Client/Portal', [
             'client' => $client,
-            'messagesSent' => $messagesSent
+            'messagesSent' => $messagesSent,
+            'adminMessages' => $adminMessages
         ]);
 
 
+    }
+
+
+    function markAsRead(Request $request) {
+
+        $message = Messages::findOrFail($request->id);
+        $message->is_read = $request->is_read;
+        $message->save();
+
+        return redirect()->back();
     }
 
 

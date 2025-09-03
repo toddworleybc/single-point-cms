@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Clients;
 use App\Models\Messages;
 use App\Models\User;
@@ -11,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
-
-class LawyerController extends Controller
+class AdminController extends Controller
 {
     //
+     //
 
     // public function __construct()
     // {
@@ -30,11 +31,11 @@ class LawyerController extends Controller
 
 
 
-    public function lawyerDashboard()
+    public function adminDashboard()
     {
 
 
-        return Inertia::render('Lawyer/Dashboard');
+        return Inertia::render('Admin/Dashboard');
 
     }//====
 
@@ -44,14 +45,16 @@ class LawyerController extends Controller
     public function clients() {
 
 
-        $users = User::all();
+        $users = User::where('role', '!=', 'ebd_admin')
+                        ->orderBy('name', 'asc')
+                        ->get();
 
         $users = $users->map( function($value, $key) {
             return $value->only(['id', 'name', 'email']);
         } );
 
 
-        return Inertia::render('Lawyer/Clients', [
+        return Inertia::render('Admin/Clients', [
             'users' => $users
         ]);
 
@@ -64,12 +67,17 @@ class LawyerController extends Controller
 
 
         $client = User::select('id', 'name')->findOrFail($id);
-        $clientMessages = $client->messages()->get();
+        $clientMessages = $client->messages()
+                                ->orderBy('created_at', 'desc')
+                                ->get();
 
-        $adminMessages = Messages::where('user_id', "1")->get();
+        $adminMessages = Messages::where('user_id', "1")
+                                ->where('message_to', $id)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
 
 
-        return Inertia::render( 'Lawyer/ShowClient', [
+        return Inertia::render( 'Admin/ShowClient', [
             'client' => $client,
             'clientMessages' => $clientMessages,
             'adminMessages' => $adminMessages
