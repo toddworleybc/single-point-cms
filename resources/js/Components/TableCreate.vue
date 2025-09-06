@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, computed } from 'vue';
+import { computed } from 'vue';
 // Props
 const props = defineProps({
     tableData: {
@@ -111,7 +111,7 @@ const headings = computed( () => {
         padding: 8px;
         text-align: left;
     }
-    a:link {
+    a:link, a {
         @apply text-blue-800 hover:text-blue-400 active:text-green-700 visited:text-blue-700
     }
    

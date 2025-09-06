@@ -12,7 +12,7 @@ class Messages extends Model
 
 
     protected $fillable = [
-        'title',
+        'subject',
         'message',
         'is_read',
         'message_to',

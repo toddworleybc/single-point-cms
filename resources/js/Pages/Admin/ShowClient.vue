@@ -30,7 +30,7 @@ const oldMessages = computed(() => clientMessages.value.filter(msg => msg.is_rea
 
 
 const singleMessage = reactive({
-    title: "",
+    subject: "",
     message: "",
     user_id: null,
     id: null,
@@ -39,7 +39,7 @@ const singleMessage = reactive({
 });
 
 const repliedToMessage = reactive({
-    title: "",
+    subject: "",
     message: "",
     user_id: null,
     id: null,
@@ -50,7 +50,7 @@ const repliedToMessage = reactive({
 
 const messageForm = useForm({
     message:  "",
-    title: "",
+    subject: "",
     client_id: client.id,
     replied_to: null
 });
@@ -74,6 +74,8 @@ function messageFormSubmit(e) {
                     markReadForm.id = messageForm.replied_to;
                     markReadForm.post( route('admin.mark.as.read') );
                 }
+
+                viewSentMessages.value = true;
                 
 
             },
@@ -107,7 +109,7 @@ function markAsReadFormSubmit(e) {
 }
 
 function singleMessageShow(message) {
-    singleMessage.title = message.title;
+    singleMessage.subject = message.subject;
     singleMessage.message = message.message;
     singleMessage.id = message.id;
     singleMessage.is_read = message.is_read;
@@ -120,7 +122,7 @@ function singleMessageShow(message) {
 
 
 function replied_to_message(id) {
-    const messagesArr = clientMessages.value ?? [];
+    const messagesArr = viewSentMessages.value ? clientMessages.value : sentMessages.value;
     let repliedMessage = null;
 
 
@@ -130,7 +132,7 @@ function replied_to_message(id) {
 
     
     if(repliedMessage) {
-        repliedToMessage.title = repliedMessage.title;
+        repliedToMessage.subject = repliedMessage.subject;
         repliedToMessage.message = repliedMessage.message;
         repliedToMessage.id = repliedMessage.id;
         repliedToMessage.is_read = repliedMessage.is_read;
@@ -151,22 +153,21 @@ function replyToMessage() {
 
 
 function closeMessageModal() {
-    console.log('ran', repliedToMessage);
     messageForm.replied_to = null;
-    messageForm.title = "";
+    messageForm.subject = "";
     messageForm.message = "";
     showMessageModal.value = false;
 }
 
 function closeSingleMessageModal() {
-    singleMessage.title = "";
+    singleMessage.subject = "";
     singleMessage.message = "";
     singleMessage.id = null;
     singleMessage.is_read = null;
     singleMessage.user_id = null;
     
 
-    repliedToMessage.title = "";
+    repliedToMessage.subject = "";
     repliedToMessage.message = "";
     repliedToMessage.user_id = null;
     repliedToMessage.id = null;
@@ -299,13 +300,13 @@ function toggleSections(e) {
          <Modal class="px-4" :show="showMessageModal" @close="closeMessageModal">
             <h2 class="border-b border-gray-300 py-4 mb-4 text-center text-2xl">Message {{ client.name }}</h2>
             <div v-if="messageForm.replied_to" class="flex justify-end items-center space-x-2 px-4">
-               <p v-if="messageForm.replied_to">Replying to {{ clientMessages.find(message => message.id === messageForm.replied_to)['title'] }}</p>
+               <p v-if="messageForm.replied_to">Replying to {{ clientMessages.find(message => message.id === messageForm.replied_to)['subject'] }}</p>
             </div>
             <div class="py-4 px-6">
                 <form @submit.prevent="messageFormSubmit">
                     <div class="mb-4">
-                        <InputLabel class="mb-2" for="message-title">Title</InputLabel>
-                        <TextInput id="message-title" class="w-full" type="text" v-model="messageForm.title" />
+                        <InputLabel class="mb-2" for="message-subject">Subject</InputLabel>
+                        <TextInput id="message-subject" class="w-full" type="text" v-model="messageForm.subject" />
                     </div>
                     <div>
                         <InputLabel class="mb-2" for="message">Message</InputLabel>
@@ -322,7 +323,7 @@ function toggleSections(e) {
          <!-- // Show Message Modal  -->
          <Modal class="px-4" :show="showSingleMessageModal" @close="closeSingleMessageModal">
             <div class="flex justify-between items-center px-4 border-b border-gray-300 py-4 mb-4">
-                <h2 class="text-2xl">{{ viewSentMessages ? 'Admin' : client.name }}'s Message</h2>
+                <h2 class="text-2xl">{{ viewSentMessages ? 'My' : client.name+"\'s" }} Message</h2>
                 <Btn type="danger" @click.prevent="closeSingleMessageModal">Close</Btn>
             </div>
             
@@ -333,8 +334,8 @@ function toggleSections(e) {
             
             <div class="py-4 px-6">
                     <div class="mb-4">
-                        <InputLabel class="mb-2" for="message-title">Title</InputLabel>
-                        <TextInput id="message-title" class="w-full" type="text" v-model="singleMessage.title" disabled />
+                        <InputLabel class="mb-2" for="message-subject">subject</InputLabel>
+                        <TextInput id="message-subject" class="w-full" type="text" v-model="singleMessage.subject" disabled />
                     </div>
                     <div>
                         <InputLabel class="mb-2" for="message">Message</InputLabel>
@@ -348,22 +349,25 @@ function toggleSections(e) {
             </div>
 
             <!-- replyed message  -->
-            <div v-if="singleMessage.replied_to" class="border-t-4 border-gray-600 pt-4">
-                 <h2 class="border-b border-gray-300 py-4 mb-4 text-center text-2xl">Replyed to {{ client.name }}'s Message</h2>
-            </div>
-           
-            
-            <div v-if="singleMessage.replied_to" class="py-4 px-6">
-                    <div class="mb-4">
-                        <InputLabel class="mb-2" for="message-title">Title</InputLabel>
-                        <TextInput id="message-title" class="w-full" type="text" v-model="repliedToMessage.title" disabled />
-                    </div>
-                    <div>
-                        <InputLabel class="mb-2" for="message">Message</InputLabel>
-                        <textarea id="message" v-model="repliedToMessage.message" class="w-full" rows="10" disabled></textarea>
-                    </div>
-            </div>
+             <div v-if="viewSentMessages && singleMessage.replied_to">
 
+             
+                <div class="border-t-4 border-gray-600 pt-4">
+                    <h2 class="border-b border-gray-300 py-4 mb-4 text-center text-2xl">Replyed to Message</h2>
+                </div>
+            
+                
+                <div  class="py-4 px-6">
+                        <div class="mb-4">
+                            <InputLabel class="mb-2" for="message-subject">Subject</InputLabel>
+                            <TextInput id="message-subject" class="w-full" type="text" v-model="repliedToMessage.subject" disabled />
+                        </div>
+                        <div>
+                            <InputLabel class="mb-2" for="message">Message</InputLabel>
+                            <textarea id="message" v-model="repliedToMessage.message" class="w-full" rows="10" disabled></textarea>
+                        </div>
+                </div>
+            </div>
          </Modal>
     </AuthenticatedLayout>
 </template>

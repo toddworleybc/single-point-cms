@@ -99,7 +99,7 @@ class AdminController extends Controller
 
         // validate
         $request->validate([
-            'title' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'client_id' => 'required|integer|exists:users,id',
             'replied_to' => 'nullable|integer|exists:messages,id'
@@ -109,12 +109,12 @@ class AdminController extends Controller
 
         // store message
         Messages::create([
-            'title' => $request->title,
+            'subject' => $request->subject,
             'user_id' => $request->user()->id,
             'message' => $request->message,
             'message_to' => $request->client_id,
             'message_from' => $request->user()->id,
-            'replied_to' => $request->replied_to,
+            'replied_to' => $request->replied_to
         ]);
 
         return redirect()->back();  

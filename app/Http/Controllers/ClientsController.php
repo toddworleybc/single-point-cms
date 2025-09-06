@@ -24,6 +24,9 @@ class ClientsController extends Controller
     public function clientPortal(Request $request) {
 
         $client = $request->user()->only(['id', 'name']);
+        $admin = User::where('id', 1)->first(); 
+
+
         $messagesSent = $request->user()->messages()
                     ->orderBy('created_at', 'desc')
                     ->get();
@@ -32,12 +35,13 @@ class ClientsController extends Controller
                          ->orderBy('created_at', 'desc')
                          ->get();
     
-
+      
          // Client Dashboard
         return Inertia::render('Client/Portal', [
             'client' => $client,
             'messagesSent' => $messagesSent,
-            'adminMessages' => $adminMessages
+            'adminMessages' => $adminMessages,
+            'adminName' => $admin->name,
         ]);
 
 
@@ -61,16 +65,17 @@ class ClientsController extends Controller
 
         $request->validate([
             'message' => 'required|string',
-            'title' => 'required|string'
+            'subject' => 'required|string',
+            'replied_to' => 'nullable|integer|exists:messages,id'
         ]);
 
         Messages::create([
             'message' => $request->message,
             'user_id' => $request->user()->id,
-            'title' => $request->title,
+            'subject' => $request->subject,
             'message_to' => "1", // always lawyer/admin
             'message_from' => $request->user()->id,
-            'is_read' => "Not Read"
+            'replied_to' => $request->replied_to,
         ]);
 
         return redirect()->back();

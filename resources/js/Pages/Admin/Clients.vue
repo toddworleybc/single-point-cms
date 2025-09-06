@@ -27,8 +27,8 @@ let clients = usePage().props.users;
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                       <TableCreate :tableData="clients" routeLink="admin.show.client" viewLinkText="View Client" :tableFilters="['name', 'email']" />
-                            
+                       <TableCreate v-if="clients && clients.length" :tableData="clients" routeLink="admin.show.client" viewLinkText="View Client" :tableFilters="['name', 'email']" />
+                         <p v-else class="font-bold text-red-600">No Clients Registered</p>
                     </div>
                 </div>
             </div>
